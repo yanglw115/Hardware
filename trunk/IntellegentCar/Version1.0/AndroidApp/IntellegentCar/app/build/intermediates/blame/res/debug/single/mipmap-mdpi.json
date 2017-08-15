@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi\\ic_launcher.png",
+        "source": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi\\ic_launcher.png",
+        "source": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+    }
+]

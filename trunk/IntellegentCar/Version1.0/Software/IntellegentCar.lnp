@@ -1,0 +1,5 @@
+"main.obj",
+"utils.obj",
+"DS18B20.obj" 
+TO "IntellegentCar" 
+RAMSIZE(256) 

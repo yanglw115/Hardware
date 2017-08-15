@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_green_dark">
+    <!--android:background="#deb7b7">-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\n\n1、WiFi模块的station模式需要使能;\n2、WiFi模块的波特率需要设置正确;\n3、WiFi模块的发送与接收与MCU进行连接时需要反接;\n\n\n"/>
+
+    <Button
+        android:id="@+id/idPopMenuOK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:text="OK"/>
+
+</LinearLayout>

@@ -1,0 +1,73 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:2:1-22:12
+	package
+		ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:3:5-58
+		INJECTED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:2:11-69
+	android:versionCode
+		INJECTED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:5:5-66
+	android:name
+		ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:5:22-64
+application
+ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:7:5-20:19
+MERGED from [com.android.support:appcompat-v7:24.2.1] C:\Users\Administrator\.android\build-cache\3aca80b0abf2b57ca7f60432e24993ba1da04173\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-v4:24.2.1] C:\Users\Administrator\.android\build-cache\b629aec5ea1ab6655e4e7b2b2313351bc0662603\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-fragment:24.2.1] C:\Users\Administrator\.android\build-cache\a019b1dce690f4cf637dfebfda4568d91f332882\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-media-compat:24.2.1] C:\Users\Administrator\.android\build-cache\267085437d68f71961d87611d58a5e84a9e7348f\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-core-ui:24.2.1] C:\Users\Administrator\.android\build-cache\2f02b9177ce591d93f250357e66f19f8bdfdd360\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-core-utils:24.2.1] C:\Users\Administrator\.android\build-cache\97627f89ca291b6b1218815ad430a5ceda2f7aca\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:animated-vector-drawable:24.2.1] C:\Users\Administrator\.android\build-cache\241ef557198a6565df577f62ee3e1723e4472b7c\output\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-vector-drawable:24.2.1] C:\Users\Administrator\.android\build-cache\762d8144ef61b4c4310264f4fc92ddcffd7ae527\output\AndroidManifest.xml:23:5-20
+MERGED from [com.android.support:support-compat:24.2.1] C:\Users\Administrator\.android\build-cache\52a037fa4a5c42679066646a39ddead5cb0797bc\output\AndroidManifest.xml:25:5-20
+	android:label
+		ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:10:9-41
+	android:supportsRtl
+		ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:11:9-35
+	android:allowBackup
+		ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:8:9-35
+	android:icon
+		ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:9:9-43
+	android:theme
+		ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:12:9-40
+activity#com.intellegentcar.yangliwei.intellegentcar.MainActivity
+ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:13:9-19:20
+	android:name
+		ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:13:19-47
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:14:13-18:29
+action#android.intent.action.MAIN
+ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:15:17-69
+	android:name
+		ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:15:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:17:17-77
+	android:name
+		ADDED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml:17:27-74
+uses-sdk
+INJECTED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support:appcompat-v7:24.2.1] C:\Users\Administrator\.android\build-cache\3aca80b0abf2b57ca7f60432e24993ba1da04173\output\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-v4:24.2.1] C:\Users\Administrator\.android\build-cache\b629aec5ea1ab6655e4e7b2b2313351bc0662603\output\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:24.2.1] C:\Users\Administrator\.android\build-cache\a019b1dce690f4cf637dfebfda4568d91f332882\output\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:24.2.1] C:\Users\Administrator\.android\build-cache\267085437d68f71961d87611d58a5e84a9e7348f\output\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-ui:24.2.1] C:\Users\Administrator\.android\build-cache\2f02b9177ce591d93f250357e66f19f8bdfdd360\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:24.2.1] C:\Users\Administrator\.android\build-cache\97627f89ca291b6b1218815ad430a5ceda2f7aca\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:animated-vector-drawable:24.2.1] C:\Users\Administrator\.android\build-cache\241ef557198a6565df577f62ee3e1723e4472b7c\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:24.2.1] C:\Users\Administrator\.android\build-cache\762d8144ef61b4c4310264f4fc92ddcffd7ae527\output\AndroidManifest.xml:21:5-43
+MERGED from [com.android.support:support-compat:24.2.1] C:\Users\Administrator\.android\build-cache\52a037fa4a5c42679066646a39ddead5cb0797bc\output\AndroidManifest.xml:21:5-23:58
+	tools:overrideLibrary
+		ADDED from [com.android.support:appcompat-v7:24.2.1] C:\Users\Administrator\.android\build-cache\3aca80b0abf2b57ca7f60432e24993ba1da04173\output\AndroidManifest.xml:23:9-75
+	android:targetSdkVersion
+		INJECTED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Altium\Projects\IntellegentCar\trunk\Version1.0\AndroidApp\IntellegentCar\app\src\main\AndroidManifest.xml

@@ -1,0 +1,50 @@
+[
+    {
+        "outputFile": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 45,
+                    "endOffset": 96
+                },
+                "from": {
+                    "file": "C:\\Users\\Administrator\\.android\\build-cache\\f6c1c4dfcccfa0210eda34b613ab5ce80b85bd57\\output\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 229,
+                        "endColumn": 45,
+                        "endOffset": 270
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 45,
+                    "endOffset": 96
+                },
+                "from": {
+                    "file": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\exploded-aar\\com.android.support.test\\rules\\0.5\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 229,
+                        "endColumn": 45,
+                        "endOffset": 270
+                    }
+                }
+            }
+        ]
+    }
+]
