@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">IntellegentCar</string>
+    <string name="WiFiTcpServerIP">192.168.100.130</string>
+    <string name="WiFiTcpServerPort">9000</string>
+    <string name="MSG_TYPE_WIFI_SERIAL_DATA">type_wifi_serial</string>
+    <string name="MSG_TCP_Connected">200</string>
+    <string name="MSG_TCP_Disconnected">500</string>
+    <string name="CMD_Motor_Forward">FE AB 07 01 01 00 B2</string>
+    <string name="MSG_TYPE_STRING">1</string>
+    <string name="CMD_Motor_Stop">FE AB 07 01 00 00 B1</string>
+    <string name="CMD_Motor_Left">FE AB 07 01 02 00 B3</string>
+    <string name="CMD_Motor_Backward">FE AB 07 01 04 00 B5</string>
+    <string name="CMD_Motor_Right">FE AB 07 01 03 00 B4</string>
+    <string name="CMD_Motor_Speed">FE AB 07 01 05 00 00</string>
+    <string name="MSG_TYPE_WIFI_TEMPERATURE_HEAD">D533080201</string>
+    <string name="MSG_DATA_TEMPERATURE">temperature</string>
+</resources>

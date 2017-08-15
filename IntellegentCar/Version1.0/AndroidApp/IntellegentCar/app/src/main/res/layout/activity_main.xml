@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_green_dark"
+    android:clickable="false"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IP:" />
+
+        <EditText
+            android:id="@+id/idTextWiFiIP"
+            android:layout_width="160sp"
+            android:layout_height="wrap_content"
+            android:text="@string/WiFiTcpServerIP"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Port:" />
+
+        <EditText
+            android:id="@+id/idTextWiFiPort"
+            android:layout_width="60sp"
+            android:layout_height="wrap_content"
+            android:text="@string/WiFiTcpServerPort"
+            android:textAlignment="center" />
+
+        <ImageView
+            android:id="@+id/idButtonNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/info"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp">
+            <TextView
+                android:id="@+id/idTextViewWiFiConnect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="16sp"
+                android:textColor="#8e0c8a"
+                android:text="连接小车: "/>
+            <com.suke.widget.SwitchButton
+                android:id="@+id/idSwitchButtonConnect"
+                android:layout_width="90dp"
+                android:layout_height="40dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="16sp"
+                android:textColor="#8e0c8a"
+                android:text="手势控制: "/>
+            <com.suke.widget.SwitchButton
+                android:id="@+id/idSwitchControlMode"
+                android:layout_width="90dp"
+                android:layout_height="40dp" />
+        </LinearLayout>
+
+        <!--
+        <Button
+            android:id="@+id/idButtonConnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/connect_button_click_drawable"
+            android:text="连接小车" />
+
+        <Button
+            android:id="@+id/idButtonDisconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/connect_button_click_drawable"
+            android:text="断开连接" />
+
+        <ImageView
+            android:id="@+id/idControlModeSelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/setting"/>
+        -->
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/idCarControlLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp">
+
+        <Button
+            android:id="@+id/idControlForward"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/control_button_click_drawable"
+            android:text="前进" />
+
+        <Button
+            android:id="@+id/idControlLeft"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/idControlForward"
+            android:layout_toLeftOf="@+id/idControlForward"
+            android:background="@drawable/control_button_click_drawable"
+            android:text="向左" />
+
+        <Button
+            android:id="@+id/idControlRight"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/idControlForward"
+            android:layout_toRightOf="@id/idControlForward"
+            android:background="@drawable/control_button_click_drawable"
+            android:text="向右" />
+
+        <Button
+            android:id="@+id/idControlBackward"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/idControlLeft"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/control_button_click_drawable"
+            android:text="向后" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="速度控制: "
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/idSpeedValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="#CD2990"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="当前温度："
+                    android:layout_marginLeft="30dp"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/idTemperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="#0a12a9"
+                    android:text="\?℃"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="1" />
+
+                <SeekBar
+                    android:id="@+id/idSeekBarSpeed"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="60"
+                    android:thumb="@mipmap/ic_launcher" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="100" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

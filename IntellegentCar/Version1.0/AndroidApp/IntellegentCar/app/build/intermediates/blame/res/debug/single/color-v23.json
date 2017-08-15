@@ -1,0 +1,74 @@
+[
+    {
+        "merged": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_switch_thumb.xml",
+        "source": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\color-v23\\abc_tint_switch_thumb.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_seek_thumb.xml",
+        "source": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\color-v23\\abc_tint_seek_thumb.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_spinner.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\3aca80b0abf2b57ca7f60432e24993ba1da04173\\output\\res\\color-v23\\abc_tint_spinner.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_switch_track.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\3aca80b0abf2b57ca7f60432e24993ba1da04173\\output\\res\\color-v23\\abc_tint_switch_track.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_edittext.xml",
+        "source": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\color-v23\\abc_tint_edittext.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_seek_thumb.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\3aca80b0abf2b57ca7f60432e24993ba1da04173\\output\\res\\color-v23\\abc_tint_seek_thumb.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_btn_checkable.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\3aca80b0abf2b57ca7f60432e24993ba1da04173\\output\\res\\color-v23\\abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_btn_colored_borderless_text_material.xml",
+        "source": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\color-v23\\abc_btn_colored_borderless_text_material.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_default.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\3aca80b0abf2b57ca7f60432e24993ba1da04173\\output\\res\\color-v23\\abc_tint_default.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_edittext.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\3aca80b0abf2b57ca7f60432e24993ba1da04173\\output\\res\\color-v23\\abc_tint_edittext.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_default.xml",
+        "source": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\color-v23\\abc_tint_default.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_switch_thumb.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\3aca80b0abf2b57ca7f60432e24993ba1da04173\\output\\res\\color-v23\\abc_tint_switch_thumb.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_btn_checkable.xml",
+        "source": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\color-v23\\abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_color_highlight_material.xml",
+        "source": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\color-v23\\abc_color_highlight_material.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_switch_track.xml",
+        "source": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\color-v23\\abc_tint_switch_track.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_spinner.xml",
+        "source": "D:\\Altium\\Projects\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\color-v23\\abc_tint_spinner.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_btn_colored_borderless_text_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\3aca80b0abf2b57ca7f60432e24993ba1da04173\\output\\res\\color-v23\\abc_btn_colored_borderless_text_material.xml"
+    },
+    {
+        "merged": "D:\\Altium\\Projects\\IntellegentCar\\trunk\\Version1.0\\AndroidApp\\IntellegentCar\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_color_highlight_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\3aca80b0abf2b57ca7f60432e24993ba1da04173\\output\\res\\color-v23\\abc_color_highlight_material.xml"
+    }
+]

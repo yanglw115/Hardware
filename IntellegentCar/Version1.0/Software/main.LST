@@ -1,0 +1,665 @@
+C51 COMPILER V9.52.0.0   MAIN                                                              07/06/2017 17:59:45 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: d:\KeilC51\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include <intrins.h>
+   3          #include <utils.h>
+   4          #include <string.h>
+   5          
+   6          #include "global.h"
+   7          #include "DS18B20.h"
+   8          
+   9          
+  10          #define false 0
+  11          #define true 1
+  12          
+  13          sfr P4 = 0xc0;
+  14          
+  15          sfr PCON2 = 0x97; // Ö÷Ê±ÖÓ·ÖÆµ
+  16          sfr IAC_CONTR = 0xc7; // Èí¼þ¿ØÖÆ¸´Î»
+  17          sfr WDT_CONTR = 0xc1; // ¿´ÃÅ¹·¿ØÖÆ¼Ä´æÆ÷
+  18          
+  19          sfr AUXR = 0x8e;
+  20          //sfr S2BUF = 0x9b; // ´®¿Ú2 Buffer
+  21          sfr S3BUF = 0xad; // ´®¿Ú3 Buffer
+  22          sfr S4BUF = 0x85; // ´®¿Ú4 Buffer
+  23          sfr AUXR1 = 0xa2; // ´®¿Ú1½øÐÐÇÐ»»µÄ¼Ä´æÆ÷
+  24          
+  25          sfr S3CON = 0xac;
+  26          sfr T3H = 0xd4;
+  27          sfr T3L = 0xd5;
+  28          sfr T4T3M = 0xd1;
+  29          sfr IE2 = 0xaf;
+  30          
+  31          sfr T2H = 0xd6;
+  32          sfr T2L = 0xd7;
+  33          
+  34          /*------- WiFi --------*/
+  35          //sbit WiFiEnable = P0^4;
+  36          
+  37          /*------- WiFi --------*/
+  38          
+  39          /*------- Protocol --------*/
+  40          /*
+  41          ¿ØÖÆÖ¸Áî:
+  42          Í£Ö¹: FE AB 07 01 00 00 B1
+  43          Ç°½ø: FE AB 07 01 01 00 B2
+  44          ×ó×ª: FE AB 07 01 02 00 B3
+  45          ÓÒ×ª: FE AB 07 01 03 00 B4
+  46          ºóÍË: FE AB 07 01 04 00 B5
+  47          ËÙ¶È: FE AB 07 01 05 xx xx
+  48          ÎÂ¶È: FE AB 07 02 01 00 B3
+  49          
+  50          ÏìÓ¦:
+  51          7Î»: D5 33 07 01 00 00 10
+  52          8Î»: D5 33 08 02 01 xx xx xx
+  53          */
+  54          #define MAX_DATA_LENGTH 7 /* ´®¿Ú½ÓÊÕÊý¾Ý×î´ó³¤¶È */
+  55          #define MIN_DATA_LENGTH 7 /* ´®¿Ú½ÓÊÕÊý¾Ý×îÐ¡³¤¶È */
+C51 COMPILER V9.52.0.0   MAIN                                                              07/06/2017 17:59:45 PAGE 2   
+
+  56          #define WIFI_CMD_HEAD1 0xFE
+  57          #define WIFI_CMD_HEAD2 0xAB
+  58          #define WIFI_REPLY_HEAD1 0xD5
+  59          #define WIFI_REPLY_HEAD2 0x33
+  60          
+  61          #define WIFI_CMD_TYPE_POS 3 // Ö¸ÁîÀàÐÍËùÔÚÊý¾ÝÖÐµÄË÷Òý
+  62          #define WIFI_CMD_ACTION_POS 4 // Ö¸Áî¶¯×÷ËùÔÚÊý¾ÝÖÐµÄË÷Òý
+  63          
+  64          #define LEN_REPLY_CONTROL 7
+  65          #define LEN_REPLY_TEMPRATURE 8
+  66          
+  67          uchar g_bufferSerial[12] = {0};
+  68          uchar g_lenReceive = 0;
+  69          uchar g_replyMotorControl[8] = {0xD5, 0x33, 0x07, 0x01, 0x00, 0x00, 0x00};
+  70          uchar g_replyTempratureGet[9] = {0xD5, 0x33, 0x08, 0x02, 0x01, 0x00, 0x00, 0x00};
+  71          
+  72          enum WiFi_CMD_Type {
+  73                  TYPE_MOTOR_CONTROL = 1,
+  74                  TYPE_TEMPRATURE_GET = 2
+  75          };
+  76          
+  77          enum WiFi_CMD_ACTION {
+  78                  ACTION_STOP = 0,
+  79                  ACTION_FORWARD = 1,
+  80                  ACTION_LEFT = 2,
+  81                  ACTION_RIGHT = 3,
+  82                  ACTION_BACKWARD = 4,
+  83                  ACTION_SPEED = 5,
+  84                  ACTION_TEMPRATURE = 6
+  85          };
+  86          
+  87          /*------- Protocol --------*/
+  88          
+  89          
+  90          /*------- motor--------*/
+  91          sfr P1M0 = 0x92;
+  92          sfr P1M1 = 0x91;
+  93          sfr P0M0 = 0x94;
+  94          sfr P0M1 = 0x93;
+  95          sfr P2M0 = 0x96;
+  96          sfr P2M1 = 0x95;
+  97          sfr P3M0 = 0xb2;
+  98          sfr P3M1 = 0xb1;
+  99          sfr P4M0 = 0xb4;
+ 100          sfr P4M1 = 0xb3;
+ 101          
+ 102          sfr PWMCFG = 0xf1;
+ 103          sfr PWMCR = 0xf5;
+ 104          sfr PWMIF = 0xf6;
+ 105          sfr P_SW2 = 0xba;
+ 106          
+ 107          #define PWMC (*(uintvx *)0xfff0)
+ 108          #define PWMCH (*(ucharvx *)0xfff0)
+ 109          #define PWMCL (*(ucharvx *)0xfff1)
+ 110          #define PWMCKS (*(uintvx *)0xfff2)
+ 111          
+ 112          #define PWM2T1 (*(uintvx *)0xff00)
+ 113          #define PWM2T1H (*(ucharvx *)0xff00)
+ 114          #define PWM2T1L (*(ucharvx *)0xff01)
+ 115          #define PWM2T2 (*(uintvx *)0xfff02)
+ 116          #define PWM2T2H (*(ucharvx *)0xff02)
+ 117          #define PWM2T2L (*(ucharvx *)0xff03)
+C51 COMPILER V9.52.0.0   MAIN                                                              07/06/2017 17:59:45 PAGE 3   
+
+ 118          #define PWM2CR (*(uintvx *)0xff04)
+ 119          
+ 120          #define PWM3T1 (*(uintvx *)0xff10)
+ 121          #define PWM3T1H (*(ucharvx *)0xff10)
+ 122          #define PWM3T1L (*(ucharvx *)0xff11)
+ 123          #define PWM3T2 (*(uintvx *)0xfff12)
+ 124          #define PWM3T2H (*(ucharvx *)0xff12)
+ 125          #define PWM3T2L (*(ucharvx *)0xff13)
+ 126          #define PWM3CR (*(uintvx *)0xff14)
+ 127          
+ 128          #define PWM4T1 (*(uintvx *)0xff20)
+ 129          #define PWM4T1H (*(ucharvx *)0xff20)
+ 130          #define PWM4T1L (*(ucharvx *)0xff21)
+ 131          #define PWM4T2 (*(uintvx *)0xfff22)
+ 132          #define PWM4T2H (*(ucharvx *)0xff22)
+ 133          #define PWM4T2L (*(ucharvx *)0xff23)
+ 134          #define PWM4CR (*(uintvx *)0xff24)
+ 135          
+ 136          #define PWM5T1 (*(uintvx *)0xff30)
+ 137          #define PWM5T1H (*(ucharvx *)0xff30)
+ 138          #define PWM5T1L (*(ucharvx *)0xff31)
+ 139          #define PWM5T2 (*(uintvx *)0xfff32)
+ 140          #define PWM5T2H (*(ucharvx *)0xff32)
+ 141          #define PWM5T2L (*(ucharvx *)0xff33)
+ 142          #define PWM5CR (*(uintvx *)0xff34)
+ 143          
+ 144          
+ 145          #define PWM_CYCLE 0x1000L // ×î´óÎª0x7fff/32767
+ 146          #define SPEED_MAX (PWM_CYCLE)
+ 147          #define SPEED_MIN (PWM_CYCLE / 2)
+ 148          
+ 149          sbit STBY1 = P3^5;
+ 150          sbit STBY2 = P3^4;
+ 151          sbit PWMA_F_L = P3^7; // Ê¹ÓÃPWM2Çý¶¯µç»ú1
+ 152          sbit PWMA_F_R = P2^1; // Ê¹ÓÃPWM3Çý¶¯µç»ú2
+ 153          sbit PWMA_B_L = P2^2; // Ê¹ÓÃPWM4Çý¶¯µç»ú3
+ 154          sbit PWMA_B_R = P2^3; // Ê¹ÓÃPWM5Çý¶¯µç»ú4
+ 155          sbit AIN_F_L_1 = P2^5;
+ 156          sbit AIN_F_L_2 = P2^6;
+ 157          sbit AIN_F_R_1 = P4^5;
+ 158          sbit AIN_F_R_2 = P2^7;
+ 159          sbit AIN_B_L_1 = P0^2;
+ 160          sbit AIN_B_L_2 = P0^3;
+ 161          sbit AIN_B_R_1 = P0^5;
+ 162          sbit AIN_B_R_2 = P0^6;
+ 163          /*------- motor--------*/
+ 164          
+ 165          #define FREQUENCY_DIVISION_1 0x0
+ 166          #define FREQUENCY_DIVISION_2 0x1
+ 167          #define FREQUENCY_DIVISION_4 0x2
+ 168          #define FREQUENCY_DIVISION_8 0x3
+ 169          #define FREQUENCY_DIVISION_16 0x4
+ 170          #define FREQUENCY_DIVISION_32 0x5
+ 171          #define FREQUENCY_DIVISION_64 0x6
+ 172          #define FREQUENCY_DIVISION_128 0x7
+ 173          
+ 174          #define SOFT_RESET_USER_DATA 0x20;
+ 175          #define SOFT_RESET_ISP_DATA 0x60;
+ 176          
+ 177          #define FOSC 22118400L // 22.184MHz
+ 178          #define BAUD 115200L
+ 179          #define NONE_PARITY 0
+C51 COMPILER V9.52.0.0   MAIN                                                              07/06/2017 17:59:45 PAGE 4   
+
+ 180          
+ 181          #define Debug_S3_To_S1 1 // ´®¿Ú3½ÓÊÕµ½µÄÊý¾Ý×ª·¢¸ø´®¿Ú1Êä³ö£¬µ÷ÊÔÓÃ
+ 182          bit g_bIdealState = true;
+ 183          ulong g_speedCurrent = 0;
+ 184          
+ 185          void stopCar()
+ 186          {
+ 187   1              STBY1 = 0; // µç»úÊ¹ÄÜ´ò¿ª
+ 188   1              STBY2 = 0;
+ 189   1      }
+ 190          
+ 191          void goForward()
+ 192          {
+ 193   1              AIN_F_L_1 = 0; // µç»úÕý×ª
+ 194   1              AIN_F_L_2 = 1;
+ 195   1              AIN_F_R_1 = 0;
+ 196   1              AIN_F_R_2 = 1;
+ 197   1              AIN_B_L_1 = 0; // µç»úÕý×ª
+ 198   1              AIN_B_L_2 = 1;
+ 199   1              AIN_B_R_1 = 0;
+ 200   1              AIN_B_R_2 = 1;
+ 201   1      
+ 202   1              P_SW2 = 0x80; // XSFR
+ 203   1              PWM2T1 = g_speedCurrent;
+ 204   1              PWM3T1 = g_speedCurrent;
+ 205   1              PWM4T1 = g_speedCurrent;
+ 206   1              PWM5T1 = g_speedCurrent;
+ 207   1              P_SW2 &= (~0x80); // ¹Ø±ÕXSFR
+ 208   1      
+ 209   1              STBY1 = 1; // µç»úÊ¹ÄÜ´ò¿ª
+ 210   1              STBY2 = 1;
+ 211   1      }
+ 212          
+ 213          void goBackward()
+ 214          {
+ 215   1              AIN_F_L_1 = 1; // µç»ú·´×ª
+ 216   1              AIN_F_L_2 = 0;
+ 217   1              AIN_F_R_1 = 1;
+ 218   1              AIN_F_R_2 = 0;
+ 219   1              AIN_B_L_1 = 1; // µç»ú·´×ª
+ 220   1              AIN_B_L_2 = 0;
+ 221   1              AIN_B_R_1 = 1;
+ 222   1              AIN_B_R_2 = 0;
+ 223   1      
+ 224   1              P_SW2 = 0x80; // XSFR
+ 225   1              PWM2T1 = g_speedCurrent;
+ 226   1              PWM3T1 = g_speedCurrent;
+ 227   1              PWM4T1 = g_speedCurrent;
+ 228   1              PWM5T1 = g_speedCurrent;
+ 229   1              P_SW2 &= (~0x80); // ¹Ø±ÕXSFR
+ 230   1      
+ 231   1              STBY1 = 1; // µç»úÊ¹ÄÜ´ò¿ª
+ 232   1              STBY2 = 1;
+ 233   1      }
+ 234          
+ 235          void goLeft()
+ 236          {
+ 237   1              AIN_F_L_1 = 0; // µç»úÕý×ª
+ 238   1              AIN_F_L_2 = 1;
+ 239   1              AIN_F_R_1 = 1;
+ 240   1              AIN_F_R_2 = 0;
+ 241   1              AIN_B_L_1 = 0; // µç»úÕý×ª
+C51 COMPILER V9.52.0.0   MAIN                                                              07/06/2017 17:59:45 PAGE 5   
+
+ 242   1              AIN_B_L_2 = 1;
+ 243   1              AIN_B_R_1 = 1;
+ 244   1              AIN_B_R_2 = 0;
+ 245   1      
+ 246   1              P_SW2 = 0x80; // XSFR
+ 247   1              PWM2T1 = g_speedCurrent;
+ 248   1              PWM3T1 = g_speedCurrent;
+ 249   1              PWM4T1 = g_speedCurrent;
+ 250   1              PWM5T1 = g_speedCurrent;
+ 251   1              P_SW2 &= (~0x80); // ¹Ø±ÕXSFR
+ 252   1      
+ 253   1              STBY1 = 1; // µç»úÊ¹ÄÜ´ò¿ª
+ 254   1              STBY2 = 1;
+ 255   1      }
+ 256          
+ 257          void goRight()
+ 258          {
+ 259   1              AIN_F_L_1 = 1; // µç»úÕý×ª
+ 260   1              AIN_F_L_2 = 0;
+ 261   1              AIN_F_R_1 = 0;
+ 262   1              AIN_F_R_2 = 1;
+ 263   1              AIN_B_L_1 = 1; // µç»úÕý×ª
+ 264   1              AIN_B_L_2 = 0;
+ 265   1              AIN_B_R_1 = 0;
+ 266   1              AIN_B_R_2 = 1;
+ 267   1              
+ 268   1              P_SW2 = 0x80; // XSFR
+ 269   1              PWM2T1 = g_speedCurrent;
+ 270   1              PWM3T1 = g_speedCurrent;
+ 271   1              PWM4T1 = g_speedCurrent;
+ 272   1              PWM5T1 = g_speedCurrent;
+ 273   1              P_SW2 &= (~0x80); // ¹Ø±ÕXSFR
+ 274   1      
+ 275   1              STBY1 = 1; // µç»úÊ¹ÄÜ´ò¿ª
+ 276   1              STBY2 = 1;
+ 277   1      }
+ 278          
+ 279          void setSpeed(uchar speed) /* 1---100 */
+ 280          {
+ 281   1              g_speedCurrent = SPEED_MIN + (SPEED_MAX - SPEED_MIN) / 100 * speed;
+ 282   1              speed = 0;
+ 283   1      }
+ 284          
+ 285          void sendSerialMessage3(uchar byte)
+ 286          {
+ 287   1      #if Debug_S3_To_S1
+ 288   1              SBUF = byte;
+ 289   1      #endif
+ 290   1      
+ 291   1      }
+ 292          
+ 293          uchar getSumForArray(uchar array[], uchar len)
+ 294          {
+ 295   1              uchar i = 0, temp = 0;
+ 296   1              for (i = 0; i < len - 1; ++i) {
+ 297   2                      temp += array[i];
+ 298   2              }
+ 299   1              return temp;
+ 300   1      }
+ 301          
+ 302          bit checksumWiFiData(uchar len)
+ 303          {
+C51 COMPILER V9.52.0.0   MAIN                                                              07/06/2017 17:59:45 PAGE 6   
+
+ 304   1              if (getSumForArray(g_bufferSerial, len) != g_bufferSerial[len - 1])
+ 305   1                      return false;
+ 306   1              return true;
+ 307   1      }
+ 308          
+ 309          void sendDataToWiFi(uchar *pArray, uchar len)
+ 310          {
+ 311   1              uchar i = 0;
+ 312   1              for (; i < len; ++i) {
+ 313   2                      S3BUF = pArray[i];
+ 314   2                      //while (!(S3CON & 0x2)); /* ×¢ÒâÕâÀï²»ÒªÐ´´í³Éwhile(~(S3CON & 0x2))ÁË */
+ 315   2                      S3CON &= (~0x2);
+ 316   2                      delayMS(20);
+ 317   2              }
+ 318   1      }
+ 319          
+ 320          void replyWiFiMessage(bit bSuccess)
+ 321          {
+ 322   1              uchar len = 0;
+ 323   1              int temp;
+ 324   1              g_bufferSerial[0] = WIFI_REPLY_HEAD1;
+ 325   1              g_bufferSerial[1] = WIFI_REPLY_HEAD2;
+ 326   1              switch (g_bufferSerial[WIFI_CMD_TYPE_POS]) {
+ 327   2                      case TYPE_MOTOR_CONTROL:
+ 328   2                              g_bufferSerial[5] = (bSuccess? 0x00: 0x01);
+ 329   2                              len = LEN_REPLY_CONTROL;
+ 330   2                      break;
+ 331   2                      case TYPE_TEMPRATURE_GET:
+ 332   2                              g_bufferSerial[2] = 0x8; // ³¤¶ÈÎª8
+ 333   2                              /* Èç¹û»ñÈ¡³É¹¦£¬»¹ÐèÒªº¯Êý´«²Î½øÀ´ */
+ 334   2                              temp = getTemprature();
+ 335   2                              g_bufferSerial[5] = (uchar)temp;
+ 336   2                              g_bufferSerial[6] = (uchar)(temp << 8);
+ 337   2                              len = LEN_REPLY_TEMPRATURE;
+ 338   2                      break;
+ 339   2                      default:
+ 340   2                      break;
+ 341   2              }
+ 342   1              /* ×îºóÒ»¸ö×Ö½Ú */
+ 343   1              g_bufferSerial[len - 1] = getSumForArray(g_bufferSerial, len);
+ 344   1              //g_bufferSerial[len] = 0x0a;//Ôö¼Ó»»ÐÐ·û(Android¶ËÈç¹ûÓÃµ½ÁËBufferedReader.readLine()²ÅÐèÒª¼Ó»»ÐÐ·û)
+ 345   1              sendDataToWiFi(g_bufferSerial, len);
+ 346   1              
+ 347   1      }
+ 348          
+ 349          void doWiFiCmd()
+ 350          {
+ 351   1              bit bOK = 1;
+ 352   1              uchar temp = 0;
+ 353   1              switch (g_bufferSerial[WIFI_CMD_TYPE_POS]) {
+ 354   2                      case TYPE_MOTOR_CONTROL:
+ 355   2                              switch (g_bufferSerial[WIFI_CMD_ACTION_POS]) {
+ 356   3                                      case ACTION_STOP: stopCar(); break;
+ 357   3                                      case ACTION_FORWARD: goForward(); break;
+ 358   3                                      case ACTION_LEFT: goLeft(); break;
+ 359   3                                      case ACTION_RIGHT: goRight(); break;
+ 360   3                                      case ACTION_BACKWARD: goBackward(); break;
+ 361   3                                      case ACTION_SPEED:
+ 362   3                                              temp = g_bufferSerial[5];
+ 363   3                                              if ((temp >= 1) && (temp <= 100))
+ 364   3                                                      setSpeed(temp);
+ 365   3                                              else
+C51 COMPILER V9.52.0.0   MAIN                                                              07/06/2017 17:59:45 PAGE 7   
+
+ 366   3                                                      bOK = 0;
+ 367   3                                      break;
+ 368   3                                      default:
+ 369   3                                              bOK = 0;
+ 370   3                                      break;
+ 371   3                              }
+ 372   2                      if (bOK) {
+ 373   3                              replyWiFiMessage(true);
+ 374   3                      }
+ 375   2                      break;
+ 376   2                      case TYPE_TEMPRATURE_GET:
+ 377   2                              // ÎÂ¶ÈµÄ»ñÈ¡ÔÚreplyÖÐ½øÐÐ£¬±ÜÃâ´«²Î
+ 378   2                              replyWiFiMessage(true);
+ 379   2                      break;
+ 380   2                      default:
+ 381   2                              bOK = 0;
+ 382   2                      break;
+ 383   2              }
+ 384   1      }
+ 385          
+ 386          void handleReceivedWiFiData(uchar byte)
+ 387          {
+ 388   1          uchar temp = 0;
+ 389   1              static uchar len = 0;
+ 390   1              if (g_lenReceive == 0) {
+ 391   2                      temp = 0;
+ 392   2                      len = 0;
+ 393   2                      if (byte == WIFI_CMD_HEAD1) {
+ 394   3                              /* Í·²¿¹²ÓÐÁ½¸ö×Ö½Ú£¬µÚÒ»¸ö×Ö½Ú */
+ 395   3                              g_bufferSerial[g_lenReceive++] = byte;
+ 396   3                      }
+ 397   2      
+ 398   2              } else if (g_lenReceive == 1) { 
+ 399   2                      if (byte == WIFI_CMD_HEAD2) {
+ 400   3                              /* ½ÓÊÕµ½Êý¾ÝÍ·²¿µÚ2¸ö×Ö½Ú£¬È·ÈÏÊý¾ÝÍ·²¿Õý³£ */
+ 401   3                              g_bufferSerial[g_lenReceive++] = byte;
+ 402   3                      } else {
+ 403   3                              /* ½ÓÊÕµ½µÄÊý¾ÝµÚ2¸ö×Ö½Ú²»ÊÇÊµ¼ÊÍ·²¿µÚ2¸ö£¬¿ÉÄÜÊÇÔàÊý¾Ý£¬Ò²¿ÉÄÜÊÇÍ·²¿µÚ1¸ö×Ö½Ú */
+ 404   3                              if (byte == WIFI_CMD_HEAD1) {
+ 405   4                                      /* Èç¹ûÊÇÊý¾ÝÍ·²¿µÚ1×Ö½Ú£¬½øÐÐÌæ»» */
+ 406   4                                      g_lenReceive = 0;
+ 407   4                                      g_bufferSerial[g_lenReceive++] = byte;
+ 408   4                              } else {
+ 409   4                                      /* Ç°Ãæ½ÓÊÕµ½µÄ¶¼ÊÇÔàÊý¾Ý */
+ 410   4                                      g_lenReceive = 0;
+ 411   4                              }
+ 412   3                      }
+ 413   2      
+ 414   2              } else if (g_lenReceive == 2) {
+ 415   2                      if ((byte > MAX_DATA_LENGTH) || (byte < MIN_DATA_LENGTH)) {
+ 416   3                              /* Êý¾Ý·Ç·¨£¬ÇåÁã */
+ 417   3                              g_lenReceive = 0;
+ 418   3                      } else {
+ 419   3                              len = g_bufferSerial[g_lenReceive++] = byte;
+ 420   3                      }
+ 421   2      
+ 422   2              } else if (g_lenReceive < len) {
+ 423   2                      g_bufferSerial[g_lenReceive++] = byte;
+ 424   2      
+ 425   2                      if (g_lenReceive >= len) {
+ 426   3                                      /* ½ÓÊÕµ½ÍêÕûÊý¾Ý */
+ 427   3                                      g_lenReceive = 0; /* ÏÂ´ÎÖØÐÂ¿ªÊ¼½ÓÊÕÊý¾Ý */
+C51 COMPILER V9.52.0.0   MAIN                                                              07/06/2017 17:59:45 PAGE 8   
+
+ 428   3                      
+ 429   3                                      if (!checksumWiFiData(len)) {
+ 430   4                                              replyWiFiMessage(false);
+ 431   4                                              return;
+ 432   4                                      }       
+ 433   3                                      doWiFiCmd();
+ 434   3                              }
+ 435   2              }
+ 436   1      }
+ 437          
+ 438          
+ 439          /* ´®¿ÚÖÐ¶Ï */
+ 440          void Uart1() interrupt 4
+ 441          {
+ 442   1          if (RI) {
+ 443   2              RI = 0;
+ 444   2          }
+ 445   1          if (TI) {
+ 446   2              TI = 0;
+ 447   2          }
+ 448   1      }
+ 449          
+ 450          /* ´®¿ÚÖÐ¶Ï */
+ 451          void Uart3() interrupt 17
+ 452          {
+ 453   1              /* !!!´®¿ÚÖÐ¶ÏÖÐ²»ÒªÔÙ·¢´®¿ÚÊý¾Ý£¬ÕâÑù»á³öÏÖ´®¿Ú½ÓÊÕÒì³£¡£²¢ÇÒÊý¾ÝÈç¹ûÔÚÖ÷³ÌÐòÖÐ½øÐÐ´¦Àí¶ÁÈ¡Êý¾ÝµÄ»°£¬Ò²¿
+             -ÉÄÜÒòÎªÖÐ¶ÏÆµÂÊÌ«¿ì£¬µ¼ÖÂÊý¾Ý¶ªÊ§ */
+ 454   1          /* µ«ÊÇÈç¹û°ÑËùÓÐµÄ¾¯¸æ¶¼È¥³ýÖ®ºó£¬³ÌÐòÈ´Ò²¿ÉÒÔÍ¨¹ý´®¿Ú3Ïò´®¿Ú1×ª·¢Êý¾Ý */
+ 455   1      
+ 456   1              uchar temp = 0;
+ 457   1              g_bIdealState = false; // ÍË³ö¿ÕÏÐÄ£Ê½
+ 458   1      
+ 459   1              /* ¶ÁÊý¾Ý */
+ 460   1          if (S3CON & 0x1) {
+ 461   2                      temp = S3BUF;
+ 462   2                      /* ÏìÓ¦ÖÐ¶ÏÖ®ºó±ØÐëÓÃÈí¼þÇåÁã£¬Ò²¿ÉÒÔÔÚÍâÃæ½øÐÐÇåÁã£¬Ö»ÒªÂú×ãÎÄµµËµÃ÷·¢ËÍ»ò½ÓÊÕ³É¹¦µÄ±êÖ¾Î»±»ÇåÁã¼´¿É£¬Ò
+             -ÔÊ¹»º³åÇøÔÙ´Î¿ÉÓÃ */
+ 463   2      
+ 464   2                      /* Êµ¼ùÖ¤Ã÷£¬¿ÉÒÔÔÚ´®¿ÚÖÐ¶Ï¶Á´¦Àí¹ý³ÌÖÐ£¬½øÐÐ´®¿ÚÊý¾ÝµÄÁ¬ÐøÐ´²Ù×÷ */
+ 465   2                      sendSerialMessage3(temp);
+ 466   2                      handleReceivedWiFiData(temp);
+ 467   2                      S3CON &= (~0x1);
+ 468   2          }
+ 469   1      
+ 470   1              /* Ð´Êý¾Ý */
+ 471   1          if (S3CON & 0x2) {
+ 472   2              S3CON &= (~0x2);
+ 473   2          }
+ 474   1      }
+ 475          
+ 476          
+ 477          
+ 478          void init_AUXR1()
+ 479          {
+ 480   1      
+ 481   1              /**
+ 482   1            * ¶ÔÓÚSTC15ÏµÁÐµ¥Æ¬»ú£¬´®¿Ú2Ö»ÄÜÊ¹ÓÃ¶¨Ê±Æ÷2×÷Îª²¨ÌØÂÊ·¢ÉúÆ÷£¬²»ÄÜ¹»Ñ¡ÔñÆäËû¶¨Ê±Æ÷×÷Îª²¨ÌØÂÊ·¢ÉúÆ÷£»¶
+             -ø´®¿Ú1Ä¬ÈÏÑ¡Ôñ¶¨Ê±Æ÷2×÷Îª²¨ÌØÂÊ·¢ÉúÆ÷£¬Ò²
+ 483   1               * ¿ÉÒÔÑ¡Ôñ¶¨Ê±Æ÷1×÷Îª²¨ÌØÂÊ·¢ÉúÆ÷£»´®¿Ú3Ä¬ÈÏÑ¡Ôñ¶¨Ê±Æ÷2×÷ÎªÆä²¨ÌØÂÊ·¢ÉúÆ÷£¬Ò²¿ÉÒÔÑ¡Ôñ¶¨Ê±Æ÷3×÷ÎªÆä²¨ÌØÂÊ
+             -·¢ÉúÆ÷£»´®¿Ú4Ä¬ÈÏÑ¡Ôñ¶¨Ê±Æ÷2×÷ÎªÆä²¨
+ 484   1            * ÂÊ·¢ÉúÆ÷£¬Ò²¿ÉÒÔÑ¡Ôñ¶¨Ê±Æ÷4×÷ÎªÆä²¨ÌØÂÊ·¢ÉúÆ÷£»
+ 485   1               **/
+C51 COMPILER V9.52.0.0   MAIN                                                              07/06/2017 17:59:45 PAGE 9   
+
+ 486   1          SCON = 0x50; // 8Î»¿É±ä²¨ÌØÂÊ£¬Ä¬ÈÏ²ÉÓÃP3.0,P3.1×÷Îª´®¿Ú1
+ 487   1              /* ´®ÐÐ¿ÚÊ¹ÓÃ¶¨Ê±Æ÷2×÷ÎªÆä²¨ÌØÂÊ·¢ÉúÆ÷Ê±£¬²¨ÌØÂÊ=(¶¨Ê±Æ÷T2µÄÒç³öÂÊ)/4£¬¼´BAUD=(FOSC/(65536-T2L))/4 */
+ 488   1          T2L = (65536 - (FOSC/4/BAUD));
+ 489   1          T2H = (65536 - (FOSC/4/BAUD)) >> 8;
+ 490   1          
+ 491   1          AUXR = 0x14; // ¶¨Ê±Æ÷2µÄËÙ¶ÈÊÇ´«Í³8051µÄ12±¶£¬²»·ÖÆµ£¬²¢ÔÊÐí¶¨Ê±Æ÷2ÔËÐÐ
+ 492   1          AUXR |= 0x1; // Ñ¡Ôñ¶¨Ê±Æ÷2×÷Îª´®¿Ú1µÄ²¨ÌØÂÊ·¢ÉúÆ÷
+ 493   1          
+ 494   1      }
+ 495          
+ 496          void init_AUXR3()
+ 497          {
+ 498   1      #if 0
+                      S3CON = (1 << 6) | (1 << 4); // Ê¹ÓÃ¶¨Ê±Æ÷3×÷Îª²¨ÌØÂÊ·¢ÉúÆ÷£»ÔÊÐí½ÓÊÕ£»
+                      T3L = (65536 - (FOSC/4/BAUD));
+                      T3H = (65536 - (FOSC/4/BAUD)) >> 8;
+                      T4T3M = (1 << 3) | (1 << 1); // ²»·ÖÆµ£»ÔÊÐíT3ÔËÐÐ£»
+              #else
+ 504   1              S3CON = (1 << 4); // Ê¹ÓÃ¶¨Ê±2×÷Îª²¨ÌØÂÊ·¢ÉúÆ÷£»ÔÊÐí½ÓÊÕ£»
+ 505   1      #endif
+ 506   1              IE2 = (1 << 3); // ´®¿Ú3ÖÐ¶ÏÔÊÐí
+ 507   1      }
+ 508          
+ 509          void init_Motor_Driver()
+ 510          {
+ 511   1              STBY1 = 0; // µç»úÊ¹ÄÜ´ò¿ª
+ 512   1              STBY2 = 0;
+ 513   1              AIN_F_L_1 = 0; // µç»úÕý×ª
+ 514   1              AIN_F_L_2 = 1;
+ 515   1              AIN_B_L_1 = 0; // µç»úÕý×ª
+ 516   1              AIN_B_L_2 = 1;
+ 517   1              P0M0 &= (~0xf0); // PWMÏà¹ØµÄ³õÊ¼»¯Ê±È«²¿×¼Ë«ÏòÊä³ö£¬·ñÔò²»ÄÜÕý³£Ê¹ÓÃ
+ 518   1              P0M1 &= (~0xf0);
+ 519   1              P1M0 &= (~0xc0);
+ 520   1              P1M1 &= (~0xc0);
+ 521   1              P2M0 &= (~0x9e); // PWM3/4/5×¼Ë«ÏòÊä³ö(PWMÏà¹ØµÄ³õÊ¼»¯Ê±È«²¿×¼Ë«ÏòÊä³ö£¬·ñÔò²»ÄÜÕý³£Ê¹ÓÃ)
+ 522   1              P2M1 &= (~0x9e);
+ 523   1              P3M0 &= (~0x80); // PWM2×¼Ë«ÏòÊä³ö
+ 524   1              P3M1 &= (~0x80);
+ 525   1              P4M0 &= (~0x2c);
+ 526   1              P4M1 &= (~0x2c);
+ 527   1              P_SW2 = 0x80; // XSFR
+ 528   1      
+ 529   1              PWMA_F_L = 0;
+ 530   1              PWMA_F_R = 0;
+ 531   1              PWMA_B_L = 0;
+ 532   1              PWMA_B_R = 0;
+ 533   1              PWMCKS = 0x0; // PWMÊ±ÖÓÔ´ÎªÏµÍ³Ê±ÖÓ¾­·ÖÆµÖ®ºóµÄÊ±ÖÓ
+ 534   1              PWMCKS |= 0x0; // PWMÊ±ÖÓÎªÏµÍ³Ê±ÖÓ/(PS[3:0] + 1) 
+ 535   1      
+ 536   1              PWMC = PWM_CYCLE; // PWM¼ÆÊýÖÜÆÚ
+ 537   1      
+ 538   1              /* PWM2: Ç°×ó£»PWM3: Ç°ÓÒ£»PWM4: ºó×ó£»PWM5: ºóÓÒ */
+ 539   1              PWM2T1 = SPEED_MAX; //¶ÔÓÚ5VµçÑ¹£¬×îÐ¡Ò²ÐèÒªSPEED_MAX/2²ÅÄÜ´ø¶¯µç»ú
+ 540   1              PWM2T2 = 0;
+ 541   1              PWM2CR = 0x0; // PWM4µ½P2.2Êä³ö
+ 542   1      
+ 543   1              PWM3T1 = SPEED_MAX;
+ 544   1              PWM3T2 = 0;
+ 545   1              PWM3CR = 0x0; // PWM4µ½P2.2Êä³ö
+ 546   1      
+ 547   1              PWM4T1 = SPEED_MAX;
+C51 COMPILER V9.52.0.0   MAIN                                                              07/06/2017 17:59:45 PAGE 10  
+
+ 548   1              PWM4T2 = 0;
+ 549   1              PWM4CR = 0x0; // PWM4µ½P2.2Êä³ö
+ 550   1              
+ 551   1              PWM5T1 = SPEED_MAX;
+ 552   1              PWM5T2 = 0;
+ 553   1              PWM5CR = 0x0; // PWM4µ½P2.2Êä³ö
+ 554   1              
+ 555   1              PWMCFG = 0x0; // PWM2/3/4/5³õÊ¼µçÆ½ÎªµÍµçÆ½
+ 556   1      
+ 557   1      
+ 558   1              PWMIF = 0x0;
+ 559   1              PWMCR = 0x0f; // Ê¹ÄÜPWM2/3/4/5·¢ÉúÆ÷
+ 560   1              PWMCR |= 0x80; // Ê¹ÄÜPWM·¢ÉúÆ÷£¬¿ªÊ¼¼ÆÊý
+ 561   1              P_SW2 &= (~0x80); // ¹Ø±ÕXSFR
+ 562   1      
+ 563   1              g_speedCurrent = SPEED_MAX;
+ 564   1      }
+ 565          
+ 566          void init_WiFi()
+ 567          {
+ 568   1              //WiFiEnable = 1;
+ 569   1      }
+ 570          
+ 571          void init()
+ 572          {
+ 573   1              PCON2 = 0x0; // ÏµÍ³Ê±ÖÓÓëIRC±£³ÖÒ»ÖÂ£¬²»·ÖÆµ£¬Ò²²»¶ÔÍâÊä³ö
+ 574   1              init_AUXR1(); // ÀïÃæÓÐ¶¨Ê±Æ÷2µÄÆô¶¯£¬ËùÒÔÐèÒª·ÅÔÚºóÃæ(Èç¹û´®¿Ú3Ò²Ê¹ÓÃ¶¨Ê±Æ÷2×÷Îª²¨ÌØÂÊ·¢ÉúÆ÷µÄ»°)
+ 575   1              init_AUXR3(); 
+ 576   1              init_Motor_Driver();
+ 577   1          init_WiFi();
+ 578   1          ES = 1; // ¿ªÆô´®¿ÚÖÐ¶Ï
+ 579   1          EA = 1; // ¿ªÆô×ÜÖÐ¶Ï
+ 580   1      
+ 581   1      }
+ 582          
+ 583          void main()
+ 584          {
+ 585   1          int nTemp;
+ 586   1              init();
+ 587   1          
+ 588   1          while (1) {
+ 589   2      #if 0
+                              delayS(60);
+                              if (g_bIdealState) {
+                                      PCON |= 0x1; // ½øÈë¿ÕÏÐÄ£Ê½
+                                      _nop_();
+                                      _nop_();
+                                      _nop_();
+                                      _nop_();
+                                      
+                              }
+                              g_bIdealState = true;   
+                                      
+              #else
+ 602   2                      delayS(TEMPRATURE_UPLOAD_INTERVAL);
+ 603   2                      EA = 0;
+ 604   2                      nTemp = getTemprature();
+ 605   2                      g_replyTempratureGet[5] = (uchar)(nTemp >> 8);
+ 606   2                      g_replyTempratureGet[6] = (uchar)nTemp;
+ 607   2                      g_replyTempratureGet[8 - 1] = getSumForArray(g_replyTempratureGet, 8);
+ 608   2                                      
+ 609   2                      EA = 1;
+C51 COMPILER V9.52.0.0   MAIN                                                              07/06/2017 17:59:45 PAGE 11  
+
+ 610   2                      sendDataToWiFi(g_replyTempratureGet, 8);
+ 611   2      #if 1
+ 612   2                      sendSerialMessage3(nTemp >> 8);
+ 613   2                      delay1ms();
+ 614   2                      sendSerialMessage3(nTemp);
+ 615   2      #endif
+ 616   2      #endif
+ 617   2          }
+ 618   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1090    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     35      13
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1       2
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
